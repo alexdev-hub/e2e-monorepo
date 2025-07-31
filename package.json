@@ -1,0 +1,19 @@
+{
+  "name": "e2e-monorepo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test:cypress": "cypress run",
+    "test:pw": "playwright test",
+    "test": "npm run test:cypress && npm run test:pw"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "cypress": "^14.5.3",
+    "typescript": "^5.9.2"
+  }
+}
