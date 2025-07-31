@@ -15,5 +15,9 @@
     "@playwright/test": "^1.54.1",
     "cypress": "^14.5.3",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "writer-sdk": "^2.2.1"
   }
 }
