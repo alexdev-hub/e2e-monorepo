@@ -7,4 +7,10 @@ export default defineConfig({
   env: {
     WRITER_API_KEY: process.env.WRITER_API_KEY,
   },
+
+  e2e: {
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+  },
 });
