@@ -1,37 +1,84 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+const BASE_HEADERS = {
+    Authorization: `Bearer ${Cypress.env("WRITER_API_KEY")}`,
+    "Content-Type": "application/json",
+};
+
+const BASE_URL = Cypress.env("baseUrl");
+
+Cypress.Commands.add("getApplications", (): Cypress.Chainable<any> => {
+    return cy
+        .request({
+            method: "GET",
+            url: `${BASE_URL}/applications`,
+            headers: {...BASE_HEADERS},
+        })
+        .then((response) => {
+            expect(response.status).to.eq(200);
+            return cy.wrap(response.body);
+        });
+});
+
+Cypress.Commands.add(
+    "getApplicationDetails",
+    (applicationId: string): Cypress.Chainable<any> => {
+        return cy
+            .request({
+                method: "GET",
+                url: `${BASE_URL}/applications/${applicationId}`,
+                headers: {...BASE_HEADERS},
+            })
+            .then((response) => {
+                expect(response.status).to.eq(200);
+                return cy.wrap(response.body);
+            });
+    },
+);
+
+Cypress.Commands.add("getModels", () => {
+    return cy
+        .request({
+            method: "GET",
+            url: `${BASE_URL}/models`,
+            headers: {...BASE_HEADERS},
+        })
+        .then((response) => {
+            expect(response.status).to.eq(200);
+            return response.body.models;
+        });
+});
+
+Cypress.Commands.add("generateText", (body: any) => {
+    return cy
+        .request({
+            method: "POST",
+            url: `${BASE_URL}/completions`,
+            headers: {...BASE_HEADERS},
+            body: {...body},
+        })
+        .then((response) => {
+            expect(response.status).to.eq(200);
+            return response.body;
+        });
+});
+
+Cypress.Commands.add("setSessionStorage", (key: string, value: string) => {
+    cy.window().then((win) => {
+        win.sessionStorage.setItem(key, value);
+    });
+});
+
+Cypress.Commands.add(
+    "getSessionStorage",
+    (key: string): Cypress.Chainable<string> => {
+        return cy.window().then((win) => {
+            const value = win.sessionStorage.getItem(key);
+            return value ?? "";
+        });
+    },
+);
+
+Cypress.Commands.add("clearSessionStorage", () => {
+    cy.window().then((win) => {
+        win.sessionStorage.clear();
+    });
+});
