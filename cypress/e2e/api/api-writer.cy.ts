@@ -1,4 +1,4 @@
-import {applicationSchema} from "../../schemas/application.schema";
+import {applicationSchema} from "../../../schemas/application.schema";
 
 describe("Writer API", () => {
     it("assert schema for the first app from the list", () => {
