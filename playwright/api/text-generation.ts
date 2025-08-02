@@ -7,7 +7,7 @@ export async function generateText(
     request: APIRequestContext,
     promptBody: any,
 ) {
-    const response = await request.post(`https://api.writer.com/v1/completions`, {
+    const response = await request.post(`${BASE_URL}/completions`, {
         headers: {
             Authorization: `Bearer ${API_KEY}`,
         },

@@ -3,7 +3,7 @@ const BASE_HEADERS = {
     "Content-Type": "application/json",
 };
 
-const BASE_URL = Cypress.env("WRITER_API_BASE_URL");
+const BASE_URL = Cypress.env("baseUrl");
 
 Cypress.Commands.add("getApplications", (): Cypress.Chainable<any> => {
     return cy
@@ -51,7 +51,7 @@ Cypress.Commands.add("generateText", (body: any) => {
     return cy
         .request({
             method: "POST",
-            url: "https://api.writer.com/v1/completions", // why not ${BASE_URL}/completions?
+            url: `${BASE_URL}/completions`,
             headers: {...BASE_HEADERS},
             body: {...body},
         })

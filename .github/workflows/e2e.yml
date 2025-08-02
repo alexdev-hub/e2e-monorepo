@@ -16,6 +16,7 @@ jobs:
 
     env:
       WRITER_API_KEY: ${{ secrets.WRITER_API_KEY }}
+      WRITER_API_BASE_URL: https://api.writer.com/v1
 
     steps:
       - name: Checkout code

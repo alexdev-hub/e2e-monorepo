@@ -7,7 +7,7 @@ export default defineConfig({
     e2e: {
         env: {
             WRITER_API_KEY: process.env.WRITER_API_KEY,
-            WRITER_API_BASE_URL: process.env.WRITER_API_BASE_URL,
+            baseUrl: "https://api.writer.com/v1",
         },
         setupNodeEvents(on, config) {
             return config;
