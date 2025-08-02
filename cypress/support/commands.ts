@@ -51,7 +51,7 @@ Cypress.Commands.add("generateText", (body: any) => {
     return cy
         .request({
             method: "POST",
-            url: "https://api.writer.com/v1/completions", // why
+            url: "https://api.writer.com/v1/completions", // why not ${BASE_URL}/completions?
             headers: {...BASE_HEADERS},
             body: {...body},
         })

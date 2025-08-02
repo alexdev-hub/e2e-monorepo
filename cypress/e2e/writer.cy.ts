@@ -44,7 +44,6 @@ describe("Writer API", () => {
         cy.generateText(requestBody).then((body) => {
             const {choices, model} = body;
             expect(choices).to.be.an("array").and.not.be.empty;
-            // assert that contains WRITER.com
             expect(choices[0].text).to.include("WRITER.com");
             expect(model).to.equal(requestBody.model);
         });

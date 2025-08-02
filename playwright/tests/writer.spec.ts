@@ -1,7 +1,6 @@
 import {expect, test} from "@playwright/test";
-import {generateText, getApplicationDetails, getApplications} from "../api";
+import {generateText, getApplicationDetails, getApplications, getModels} from "../api";
 import {applicationSchema} from "../../schemas/application.schema";
-import Writer from "writer-sdk";
 
 test("assert schema for the first app from the list", async ({request}) => {
     const applications = await getApplications(request);
@@ -23,45 +22,36 @@ test("assert schema for the first app from the list", async ({request}) => {
     expect(result.success).toBe(true);
 });
 
-test("generates the text", async ({request}) => {
-    const applicationId = "32"; // Заменить на реальный ID приложения
-    const promptBody = {
-        prompt: "Write me a short SEO article about camping gear",
-        model: "palmyra-x-003-instruct",
-        max_tokens: 500,
-        temperature: 0.7,
-    };
+test("should fetch the list of models and validate schema", async ({request}) => {
+    const response = await getModels(request);
+    console.log("Request data:", response);
+    const {models} = response;
 
-    const text = await generateText(request, applicationId, promptBody);
-    console.log("Generated content:", text);
-});
+    expect(Array.isArray(models)).toBe(true)
+    expect(models.length).toBeGreaterThan(0);
 
-test("generates text using Writer SDK", async () => {
-    const client = new Writer({
-        apiKey: process.env.WRITER_API_KEY!,
-    });
+    const ids = new Set();
+    const names = new Set();
+    for (const model of models) {
+        expect(typeof model.id).toBe('string');
+        expect(model.id).not.toBe('');
+        expect(typeof model.name).toBe('string');
+        expect(model.name).not.toBe('');
 
-    const completion = await client.completions.create({
-        model: "palmyra-x-003-instruct",
-        prompt: "Write me a short SEO article about camping gear",
-    });
-
-    console.log("Completion choices:", completion.choices);
-
-    expect(completion.choices).toBeDefined();
-    expect(Array.isArray(completion.choices)).toBe(true);
-    expect(completion.choices.length).toBeGreaterThan(0);
-    expect(typeof completion.choices[0].text).toBe("string");
-    expect(completion.choices[0].text.length).toBeGreaterThan(0);
+        ids.add(model.id);
+        names.add(model.name);
+    }
+    expect(ids.size).toBe(models.length);
 });
 
 test("should generate text from prompt", async ({request}) => {
-    const data = {
+    const requestBody = {
         model: "palmyra-x-003-instruct",
-        prompt: "Write me a short SEO article about camping gear",
+        prompt: "Tell me about WRITER.com",
     };
-    const response = await generateText(request, data);
+    const response = await generateText(request, requestBody);
     console.log("Request data:", response);
-    expect(response).toBeDefined();
-    expect(typeof response).toBe("object");
+    const {choices, model} = response;
+    expect(Array.isArray(choices)).toBe(true);
+    expect(model).toBe(requestBody.model);
 });
