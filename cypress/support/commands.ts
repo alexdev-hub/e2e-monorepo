@@ -1,84 +1,18 @@
-const BASE_HEADERS = {
-    Authorization: `Bearer ${Cypress.env("WRITER_API_KEY")}`,
-    "Content-Type": "application/json",
-};
-
-const BASE_URL = Cypress.env("baseUrl");
-
-Cypress.Commands.add("getApplications", (): Cypress.Chainable<any> => {
-    return cy
-        .request({
-            method: "GET",
-            url: `${BASE_URL}/applications`,
-            headers: {...BASE_HEADERS},
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            return cy.wrap(response.body);
-        });
-});
-
 Cypress.Commands.add(
-    "getApplicationDetails",
-    (applicationId: string): Cypress.Chainable<any> => {
-        return cy
-            .request({
-                method: "GET",
-                url: `${BASE_URL}/applications/${applicationId}`,
-                headers: {...BASE_HEADERS},
-            })
-            .then((response) => {
-                expect(response.status).to.eq(200);
-                return cy.wrap(response.body);
-            });
-    },
-);
-
-Cypress.Commands.add("getModels", () => {
-    return cy
-        .request({
-            method: "GET",
-            url: `${BASE_URL}/models`,
-            headers: {...BASE_HEADERS},
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            return response.body.models;
+    "uiLogin",
+    (email: string, password: string): void => {
+        console.log(`Logging in with email: ${email} and password: ${password}`);
+        cy.visit("/login").its('window').then((win) => {
+            console.log(win);
+            if (win.location.pathname !== '/login') {
+                console.log(`Already logged in, current path: ${win.location.pathname}`);
+                return;
+            }
         });
-});
 
-Cypress.Commands.add("generateText", (body: any) => {
-    return cy
-        .request({
-            method: "POST",
-            url: `${BASE_URL}/completions`,
-            headers: {...BASE_HEADERS},
-            body: {...body},
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            return response.body;
-        });
-});
-
-Cypress.Commands.add("setSessionStorage", (key: string, value: string) => {
-    cy.window().then((win) => {
-        win.sessionStorage.setItem(key, value);
-    });
-});
-
-Cypress.Commands.add(
-    "getSessionStorage",
-    (key: string): Cypress.Chainable<string> => {
-        return cy.window().then((win) => {
-            const value = win.sessionStorage.getItem(key);
-            return value ?? "";
-        });
-    },
-);
-
-Cypress.Commands.add("clearSessionStorage", () => {
-    cy.window().then((win) => {
-        win.sessionStorage.clear();
-    });
-});
+        cy.get('input[type="email"]').type(email, {force: true});
+        cy.contains("button", 'Sign in').click();
+        cy.get('input[type="password"]', {timeout: 5000}).type(password);
+        cy.contains("button", 'Sign in').click();
+    }
+)

@@ -1,5 +1,6 @@
 declare namespace Cypress {
     interface Chainable {
+        // API Commands
         /**
          * Fetches the list of applications.
          * @returns {Promise<Application[]>} The list of applications.
@@ -36,6 +37,18 @@ declare namespace Cypress {
             model: string;
         }>;
 
+        // UI Commands
+        /**
+         * Logs in a user with the provided email and password.
+         * @param {string}
+         * email - The email of the user.
+         * @param {string}
+         * password - The password of the user.
+         * @return {Chainable<void>} A chainable that resolves when the login is complete.
+         */
+        uiLogin(email: string, password: string): Chainable<any>;
+
+        // Session Storage Commands
         /**
          * Gets an item from the local storage.
          * @param {string}
