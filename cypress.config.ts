@@ -1,16 +1,16 @@
-import { defineConfig } from "cypress";
+import {defineConfig} from "cypress";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 export default defineConfig({
-  env: {
-    WRITER_API_KEY: process.env.WRITER_API_KEY,
-  },
-
-  e2e: {
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
+    e2e: {
+        env: {
+            WRITER_API_KEY: process.env.WRITER_API_KEY,
+            WRITER_API_BASE_URL: process.env.WRITER_API_BASE_URL,
+        },
+        setupNodeEvents(on, config) {
+            return config;
+        },
     },
-  },
 });
