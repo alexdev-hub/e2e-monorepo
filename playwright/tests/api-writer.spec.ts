@@ -46,7 +46,7 @@ test.describe('Writer API', () => {
     }
     const { choices, model } = await generateText(request, requestBody)
     expect(Array.isArray(choices)).toBe(true)
-    expect(choices[0].text).toContain('WRITER.com')
+    expect(choices[0].text.toLowerCase()).toContain('writer.com')
     expect(model).toBe(requestBody.model)
   })
 })

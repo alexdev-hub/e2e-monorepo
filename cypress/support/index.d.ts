@@ -19,7 +19,7 @@ declare namespace Cypress {
      * Fetches the list of models.
      * @returns {Promise<Model[]>} The list of models.
      */
-    getModels(): Chainable<Model[]>
+    getModels(): Chainable<any>
 
     /**
      * Generates text based on the provided body.
@@ -27,13 +27,7 @@ declare namespace Cypress {
      * body - The body of the request to generate text.
      * @return {Promise<{ text: string; metadata: Record<string, any> }>} The generated text and metadata.
      * */
-    generateText(body: Record<key, value>): Chainable<{
-      choices: Array<{
-        text: string
-        logs_prob: any
-      }>
-      model: string
-    }>
+    generateText(body: Record<key, value>): Chainable<any>
 
     // UI Commands
     /**

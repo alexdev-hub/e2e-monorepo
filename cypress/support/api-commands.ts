@@ -42,7 +42,7 @@ Cypress.Commands.add('getModels', () => {
     })
 })
 
-Cypress.Commands.add('generateText', (body: any) => {
+Cypress.Commands.add('generateText', (body) => {
   return cy
     .request({
       method: 'POST',
