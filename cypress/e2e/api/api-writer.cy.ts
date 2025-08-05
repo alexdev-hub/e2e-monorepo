@@ -25,7 +25,7 @@ describe('Writer API', () => {
       expect(models).to.be.an('array').and.not.be.empty
       expect(models.length).to.be.greaterThan(0)
 
-      models.forEach((model) => {
+      models.forEach((model: any) => {
         expect(model).to.have.property('id').that.is.a('string').and.not.empty
         expect(model).to.have.property('name').that.is.a('string').and.not.empty
         ids.add(model.id)

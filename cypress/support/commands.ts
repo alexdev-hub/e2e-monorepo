@@ -11,7 +11,6 @@ Cypress.Commands.add('uiLogin', (email: string, password: string): void => {
   cy.get('input[type="email"]').type(email, { delay: 0 })
   cy.contains('button', 'Sign in').click()
   cy.get('input[type="password"]', { timeout: 10000 }).type(password, { delay: 0 })
-  cy.wait(10000)
   cy.contains('button[type="submit"]', 'Sign in').click({ force: true })
-  // cy.url().should('contain', 'https://app.writer.com/login/team')
+  cy.get("[class*='_pleaseWaitContainer']").should('be.visible')
 })
